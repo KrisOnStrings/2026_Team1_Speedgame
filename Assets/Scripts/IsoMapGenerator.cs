@@ -104,7 +104,7 @@ public class IsoMapGenerator : MonoBehaviour
         tileObj.GetComponent<TileController>().isPlaceable = placeable;
         tileObj.GetComponent<TileController>().isOccupied = false;
 
-        vines.Add(tileObj);
+        if (isVine) vines.Add(tileObj);
     }
 
     public List<GameObject> GeneratePath()

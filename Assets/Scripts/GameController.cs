@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     public GameObject StartButtonObj;
     public TextMeshProUGUI CurrencyHUD;
     public TextMeshProUGUI FoxHUD;
+    public TextMeshProUGUI TimerHUD;
     public TowerMenuController towerMenu;
     public GameObject[] TowerPrefabs;
     public GameObject GrapePrefab;
@@ -17,6 +18,7 @@ public class GameController : MonoBehaviour
 
     private int currency;
     private int foxesLetGo;
+    private float startTime;
     private List<GameObject> towerList;
     private List<GameObject> path;
     private List<AttackerController> attackers;
@@ -25,6 +27,7 @@ public class GameController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        startTime = -1;
         currency = StartingCurrency;
         foxesLetGo = 0;
         towerList = new List<GameObject>();
@@ -37,13 +40,20 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CurrencyHUD.text = currency.ToString();
-        FoxHUD.text = foxesLetGo.ToString();
+        if (startTime > -1)
+        {
+            CurrencyHUD.text = currency.ToString();
+            FoxHUD.text = foxesLetGo.ToString();
+            TimerHUD.text = Mathf.FloorToInt(Time.time - startTime).ToString();
+        }
     }
 
     public void StartButton()
     {
         StartButtonObj.SetActive(false);
+
+        startTime = Time.time;
+
         path = mapGen.GeneratePath();
         InvokeRepeating("GenerateAttacker", 10, 3);
 
