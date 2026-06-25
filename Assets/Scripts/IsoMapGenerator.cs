@@ -5,12 +5,18 @@ public class IsoMapGenerator : MonoBehaviour
 {
     public TextAsset mapFile;
     public GameObject TilePrefab;
+    public GameObject VinePrefab;
 
     public Sprite grassSprite;
     public Sprite pathSprite;
+    public Sprite pathVerticalSprite;
+    public Sprite pathHorizontalSprite;
+    public Sprite pathCornerUpRightSprite;
+    public Sprite pathCornerUpLeftSprite;
+    public Sprite pathCornerDownRightSprite;
+    public Sprite pathCornerDownLeftSprite;
     public Sprite spawnSprite;
     public Sprite exitSprite;
-    public Sprite vineSprite;
 
     public float tileWidth = 1.32f;
     public float tileHeight = 0.66f;
@@ -18,6 +24,8 @@ public class IsoMapGenerator : MonoBehaviour
     private char[,] map;
     private Vector3 mapCenter;
     private List<GameObject> vines;
+    private List<GameObject> waypoints;
+    private Dictionary<Vector2Int, GameObject> tileLookup = new Dictionary<Vector2Int, GameObject>();
 
     void DestroyExisting()
     {
@@ -31,17 +39,19 @@ public class IsoMapGenerator : MonoBehaviour
     public void Generate()
     {
         DestroyExisting();
-
+        tileLookup.Clear();
         vines = new List<GameObject>();
 
-        string[] rows = mapFile.text.Replace("\r", "").Trim().Split('\n');
+        string[] rows =
+            mapFile.text
+                .Replace("\r", "")
+                .Trim()
+                .Split('\n');
 
         int height = rows.Length;
         int width = rows[0].Length;
 
         map = new char[width, height];
-
-        mapCenter = IsoToWorld((width - 1) / 2f, (height - 1) / 2f);
 
         for (int y = 0; y < height; y++)
         {
@@ -51,12 +61,55 @@ public class IsoMapGenerator : MonoBehaviour
             }
         }
 
+        // Find left-most map position
+        float mapLeft = float.MaxValue;
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Vector3 pos = IsoToWorld(x, y);
+
+                if (pos.x < mapLeft)
+                {
+                    mapLeft = pos.x;
+                }
+            }
+        }
+
+        // Left edge of camera view
+        float screenLeft =
+            Camera.main.transform.position.x -
+            Camera.main.orthographicSize *
+            Camera.main.aspect;
+
+        // Small margin so tiles aren't touching edge
+        float padding = tileWidth * 0.5f;
+
+        // Amount to shift map
+        float shiftX =
+            mapLeft -
+            (screenLeft + padding);
+
+        // Keep map vertically centered
+        mapCenter = new Vector3(
+            shiftX,
+            IsoToWorld(
+                (width - 1) / 2f,
+                (height - 1) / 2f).y,
+            0
+        );
+
         // Create visual tiles
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                CreateTile(x, y, map[x, y]);
+                CreateTile(
+                    x,
+                    y,
+                    map[x, y]
+                );
             }
         }
 
@@ -78,18 +131,36 @@ public class IsoMapGenerator : MonoBehaviour
             case 'P':
                 sprite = pathSprite;
                 break;
+            case 'V':
+                sprite = pathVerticalSprite;
+                break;
+            case 'H':
+                sprite = pathHorizontalSprite;
+                break;
+            case 'Q':
+                sprite = pathCornerDownRightSprite;
+                break;
+            case 'W':
+                sprite = pathCornerDownLeftSprite;
+                break;
+            case 'R':
+                sprite = pathCornerUpRightSprite;
+                break;
+            case 'T':
+                sprite = pathCornerUpLeftSprite;
+                break;
             case 'S':
                 sprite = spawnSprite != null
                     ? spawnSprite
-                    : pathSprite;
+                    : pathVerticalSprite;
                 break;
             case 'E':
                 sprite = exitSprite != null
                     ? exitSprite
-                    : pathSprite;
+                    : pathVerticalSprite;
                 break;
-            case 'V':
-                sprite = vineSprite;
+            case 'F':
+                sprite = grassSprite;
                 isVine = true;
                 break;
         }
@@ -103,13 +174,18 @@ public class IsoMapGenerator : MonoBehaviour
         tileObj.GetComponent<SpriteRenderer>().sortingOrder = -(x + y);
         tileObj.GetComponent<TileController>().isPlaceable = placeable;
         tileObj.GetComponent<TileController>().isOccupied = false;
+        tileLookup[new Vector2Int(x, y)] = tileObj;
 
-        if (isVine) vines.Add(tileObj);
+        if (isVine)
+        {
+            Instantiate(VinePrefab, IsoToWorld(x, y) - mapCenter, Quaternion.identity, transform);
+            vines.Add(tileObj);
+        }
     }
 
     public List<GameObject> GeneratePath()
     {
-        List<GameObject> waypoints = new List<GameObject>();
+        waypoints = new List<GameObject>();
 
         Vector2Int start = FindTile('S');
         Vector2Int end = FindTile('E');
@@ -223,8 +299,6 @@ public class IsoMapGenerator : MonoBehaviour
         return path;
     }
 
-
-
     bool Inside(Vector2Int p)
     {
         return
@@ -243,8 +317,110 @@ public class IsoMapGenerator : MonoBehaviour
         );
     }
 
+    public List<GameObject> GetPath()
+    {
+        return waypoints;
+    }
+
     public List<GameObject> GetVines()
     {
         return vines;
+    }
+
+    public void UpdatePathSprites()
+    {
+        Vector2Int start = FindTile('S');
+        Vector2Int end = FindTile('E');
+
+        List<Vector2Int> path =
+            FindPath(start, end);
+
+        if (path.Count < 3)
+            return;
+
+        for (int i = 1; i < path.Count - 1; i++)
+        {
+            Vector2Int prev = path[i - 1];
+            Vector2Int curr = path[i];
+            Vector2Int next = path[i + 1];
+
+            Vector2Int dirIn =
+                curr - prev;
+
+            Vector2Int dirOut =
+                next - curr;
+
+            Sprite sprite = null;
+
+            // Straight vertical
+            if (
+                (dirIn == Vector2Int.up &&
+                 dirOut == Vector2Int.up) ||
+                (dirIn == Vector2Int.down &&
+                 dirOut == Vector2Int.down)
+            )
+            {
+                sprite = pathVerticalSprite;
+            }
+            // Straight horizontal
+            else if (
+                (dirIn == Vector2Int.left &&
+                 dirOut == Vector2Int.left) ||
+                (dirIn == Vector2Int.right &&
+                 dirOut == Vector2Int.right)
+            )
+            {
+                sprite = pathHorizontalSprite;
+            }
+            // Down -> Right
+            else if (
+                (dirIn == Vector2Int.up &&
+                 dirOut == Vector2Int.right) ||
+                (dirIn == Vector2Int.left &&
+                 dirOut == Vector2Int.down)
+            )
+            {
+                sprite = pathCornerDownRightSprite;
+            }
+            // Down -> Left
+            else if (
+                (dirIn == Vector2Int.up &&
+                 dirOut == Vector2Int.left) ||
+                (dirIn == Vector2Int.right &&
+                 dirOut == Vector2Int.down)
+            )
+            {
+                sprite = pathCornerDownLeftSprite;
+            }
+            // Up -> Right
+            else if (
+                (dirIn == Vector2Int.down &&
+                 dirOut == Vector2Int.right) ||
+                (dirIn == Vector2Int.left &&
+                 dirOut == Vector2Int.up)
+            )
+            {
+                sprite = pathCornerUpRightSprite;
+            }
+            // Up -> Left
+            else if (
+                (dirIn == Vector2Int.down &&
+                 dirOut == Vector2Int.left) ||
+                (dirIn == Vector2Int.right &&
+                 dirOut == Vector2Int.up)
+            )
+            {
+                sprite = pathCornerUpLeftSprite;
+            }
+
+            if (sprite != null &&
+                tileLookup.TryGetValue(
+                    curr,
+                    out GameObject tile))
+            {
+                tile.GetComponent<SpriteRenderer>()
+                    .sprite = sprite;
+            }
+        }
     }
 }

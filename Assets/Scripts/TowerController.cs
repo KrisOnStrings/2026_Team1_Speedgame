@@ -110,7 +110,7 @@ public class TowerController : MonoBehaviour
 
     void CheckAttack()
     {
-        AttackerController attacker = gc.GetFurthestAlongPathInRange(this);
+        AttackerController attacker = gc.waves.GetFurthestAlongPathInRange(this);
 
         if (attacker != null)
         {

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 public class AttackerController : MonoBehaviour
 {
+    public int WavePoints;
     public float MaxHealth = 5f;
     public float moveSpeed = 2f;
 
+    [HideInInspector] public WaveController wc;
     [HideInInspector] public GameController gc;
 
     private List<GameObject> path;
@@ -16,8 +18,9 @@ public class AttackerController : MonoBehaviour
     private float origXScale;
     private float origYScale;
 
-    public void Initialize(List<GameObject> intended_path, GameController new_gc)
+    public void Initialize(List<GameObject> intended_path, WaveController new_wc, GameController new_gc)
     {
+        wc = new_wc;
         gc = new_gc;
         path = intended_path;
 
@@ -111,7 +114,7 @@ public class AttackerController : MonoBehaviour
 
     public void Die()
     {
-        gc.AttackerDie(this);
+        wc.AttackerDie(this);
         Destroy(gameObject);
     }
 
