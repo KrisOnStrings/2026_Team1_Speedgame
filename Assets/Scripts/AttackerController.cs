@@ -51,7 +51,7 @@ public class AttackerController : MonoBehaviour
         if (currentPoint >= path.Count)
         {
             // Reached the end of the path
-            gc.FoxLetGo();
+            wc.AttackerThrough();
             Die();
             return;
         }

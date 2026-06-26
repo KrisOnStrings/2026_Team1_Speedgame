@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour
 {
     public IsoMapGenerator mapGen;
+    public Map[] Maps;
     public GameObject StartButtonObj;
     public TextMeshProUGUI CurrencyHUD;
     public TextMeshProUGUI FoxHUD;
@@ -17,27 +18,34 @@ public class GameController : MonoBehaviour
     public int StartingCurrency;
     public float VineGrowFrequency;
     public GameObject VictoryObj;
+    public AudioClip VictorySFX;
+    public GameObject GameOverObj;
+    public GameObject DefeatObj;
+    public AudioClip DefeatSFX;
+    public AudioClip MenuClickSFX;
 
+    private int mapIndex;
     private int currency;
-    private int foxesLetGo;
     private float startTime;
     private List<GameObject> towerList;
     private List<GameObject> grapes;
     private List<GameObject> vines;
     private List<int> availableVines;
 
+    private AudioSource m_Audio;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        mapIndex = 0;
         VictoryObj.SetActive(false);
+        DefeatObj.SetActive(false);
         startTime = -1;
-        currency = StartingCurrency;
-        foxesLetGo = 0;
         towerList = new List<GameObject>();
         grapes = new List<GameObject>();
         towerMenu.gameObject.SetActive(false);
-        mapGen.Generate();
-        mapGen.UpdatePathSprites();
+
+        m_Audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -46,7 +54,7 @@ public class GameController : MonoBehaviour
         if (startTime > -1)
         {
             CurrencyHUD.text = currency.ToString();
-            FoxHUD.text = foxesLetGo.ToString();
+            FoxHUD.text = waves.GetAttackerStatus();
             TimerHUD.text = Mathf.FloorToInt(Time.time - startTime).ToString();
             WaveHUD.text = waves.GetWaveStatus();
         }
@@ -54,11 +62,16 @@ public class GameController : MonoBehaviour
 
     public void StartButton()
     {
+        m_Audio.PlayOneShot(MenuClickSFX);
         StartButtonObj.SetActive(false);
 
         startTime = Time.time;
 
-        waves.StartWaves(mapGen.GetPath());
+        mapGen.Generate(Maps[mapIndex]);
+        mapGen.UpdatePathSprites();
+
+        currency = StartingCurrency;
+        waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints);
 
         towerMenu.gameObject.SetActive(true);
         for (int i = 0; i < TowerPrefabs.Length; i++)
@@ -73,8 +86,29 @@ public class GameController : MonoBehaviour
         InvokeRepeating("VineGrow", 0.5f, VineGrowFrequency);
     }
 
+    public void ContinueButton()
+    {
+        mapIndex++;
+        foreach(GameObject tower in towerList)
+        {
+            Destroy(tower);
+        }
+        towerList.Clear();
+
+        foreach (GameObject grape in grapes)
+        {
+            Destroy(grape);
+        }
+        grapes.Clear();
+
+        VictoryObj.SetActive(false);
+
+        StartButton();
+    }
+
     public void QuitButton()
     {
+        m_Audio.PlayOneShot(MenuClickSFX);
         Application.Quit();
     }
 
@@ -85,8 +119,9 @@ public class GameController : MonoBehaviour
 
     public void GenerateTower(int index)
     {
-        GameObject tower = Instantiate(TowerPrefabs[index]);
+        GameObject tower = Instantiate(TowerPrefabs[index], towerMenu.transform);
         tower.transform.position = towerMenu.TowerLocations[index].transform.position;
+        tower.name = TowerPrefabs[index].name;
         tower.GetComponent<TowerController>().gc = this;
         tower.GetComponent<TowerController>().towerIndex = index;
         towerList.Add(tower);
@@ -97,7 +132,7 @@ public class GameController : MonoBehaviour
         return currency;
     }
 
-    public void BuyTower(int cost)
+    public void SpendCurrency(int cost)
     {
         currency -= cost;
     }
@@ -126,15 +161,27 @@ public class GameController : MonoBehaviour
         availableVines.Add(int.Parse(grape.name));
     }
 
-    public void FoxLetGo()
-    {
-        foxesLetGo++;
-    }
-
     public void Victory()
     {
-        VictoryObj.SetActive(true);
-
         CancelInvoke("VineGrow");
+        m_Audio.PlayOneShot(VictorySFX);
+
+        if (mapIndex < (Maps.Length - 1))
+        {
+            VictoryObj.SetActive(true);
+        }
+        else
+        {
+            GameOverObj.SetActive(true);
+        }
+        startTime = -1;
+    }
+
+    public void Defeat()
+    {
+        m_Audio.PlayOneShot(DefeatSFX);
+        DefeatObj.SetActive(true);
+        CancelInvoke("VineGrow");
+        startTime = -1;
     }
 }

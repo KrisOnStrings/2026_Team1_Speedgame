@@ -6,19 +6,25 @@ public class WaveController : MonoBehaviour
     public GameController gc;
 
     public GameObject[] AttackerPrefabs;
-    public int[] WavePoints;
+
+    public int DefeatThreshold;
 
     public float TimeBeforeFirstWave;
     public float TimeBetweenWaves;
     public float MinWaveSpawnTime;
     public float MaxWaveSpawnTime;
+    public float SpawnTimeReduction;
 
     private List<AttackerController> attackers;
     private List<GameObject> path;
 
+    private int[] wavePoints;
     private int waveIndex;
     private int curWavePoints;
     private bool waveWait;
+    private int attackersLetGo;
+    private float calcMinSpawnTime;
+    private float calcMaxSpawnTime;
 
     private void Start()
     {
@@ -34,14 +40,20 @@ public class WaveController : MonoBehaviour
         }
     }
 
-    public void StartWaves(List<GameObject> mapPath)
+    public void StartWaves(List<GameObject> mapPath, int[] levelWavePoints)
     {
         waveIndex = 0;
+        attackersLetGo = 0;
+
+        wavePoints = levelWavePoints;
+        path = mapPath;
+
+        calcMinSpawnTime = MinWaveSpawnTime;
+        calcMaxSpawnTime = MaxWaveSpawnTime;
         waveWait = false;
-        curWavePoints = WavePoints[waveIndex];
+        curWavePoints = wavePoints[waveIndex];
         attackers = new List<AttackerController>();
 
-        path = mapPath;
 
         Invoke("HandleSubWave", TimeBeforeFirstWave);
     }
@@ -50,9 +62,11 @@ public class WaveController : MonoBehaviour
     {
         waveIndex++;
 
-        if (waveIndex < WavePoints.Length)
+        if (waveIndex < wavePoints.Length)
         {
-            curWavePoints = WavePoints[waveIndex];
+            curWavePoints = wavePoints[waveIndex];
+            calcMinSpawnTime *= SpawnTimeReduction;
+            calcMaxSpawnTime *= SpawnTimeReduction;
             HandleSubWave();
         }
         else
@@ -77,7 +91,7 @@ public class WaveController : MonoBehaviour
         }
         else
         {
-            float rndTime = Random.Range(MinWaveSpawnTime, MaxWaveSpawnTime);
+            float rndTime = Random.Range(calcMinSpawnTime, calcMaxSpawnTime);
             Invoke("HandleSubWave", rndTime);
         }
     }
@@ -89,22 +103,15 @@ public class WaveController : MonoBehaviour
 
         foreach (AttackerController attacker in attackers)
         {
-            float distance =
-                Vector3.Distance(
-                    transform.position,
-                    attacker.transform.position);
+            float distance = Vector3.Distance(tower.transform.position, attacker.transform.position);
 
-            if (distance > tower.Range)
+            if (distance > tower.GetRange())
                 continue;
 
-            if (attacker.GetCurrentWaypointIndex() >
-                bestProgress)
+            if (attacker.GetCurrentWaypointIndex() > bestProgress)
             {
-                bestProgress =
-                    attacker.GetCurrentWaypointIndex();
-
-                bestTarget =
-                    attacker;
+                bestProgress = attacker.GetCurrentWaypointIndex();
+                bestTarget = attacker;
             }
         }
 
@@ -116,10 +123,27 @@ public class WaveController : MonoBehaviour
         attackers.Remove(attacker);
     }
 
+    public void AttackerThrough()
+    {
+        attackersLetGo++;
+
+        if (attackersLetGo >= DefeatThreshold)
+        {
+            CancelInvoke("HandleSubWave");
+            CancelInvoke("HandleWave");
+            gc.Defeat();
+        }
+    }
+
     public string GetWaveStatus()
     {
         int curWave = waveIndex + 1;
-        if (curWave > WavePoints.Length) curWave = WavePoints.Length;
-        return $"{waveIndex + 1} / {WavePoints.Length}";
+        if (curWave > wavePoints.Length) curWave = wavePoints.Length;
+        return $"{curWave} / {wavePoints.Length}";
+    }
+
+    public string GetAttackerStatus()
+    {
+        return $"{attackersLetGo} / {DefeatThreshold}";
     }
 }

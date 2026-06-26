@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class IsoMapGenerator : MonoBehaviour
 {
-    public TextAsset mapFile;
     public GameObject TilePrefab;
     public GameObject VinePrefab;
 
@@ -36,14 +35,14 @@ public class IsoMapGenerator : MonoBehaviour
     }
 
 
-    public void Generate()
+    public void Generate(Map levelMap)
     {
         DestroyExisting();
         tileLookup.Clear();
         vines = new List<GameObject>();
 
         string[] rows =
-            mapFile.text
+            levelMap.MapText
                 .Replace("\r", "")
                 .Trim()
                 .Split('\n');
@@ -61,8 +60,7 @@ public class IsoMapGenerator : MonoBehaviour
             }
         }
 
-        // Find left-most map position
-        float mapLeft = float.MaxValue;
+        float mapRight = float.MinValue;
 
         for (int y = 0; y < height; y++)
         {
@@ -70,26 +68,26 @@ public class IsoMapGenerator : MonoBehaviour
             {
                 Vector3 pos = IsoToWorld(x, y);
 
-                if (pos.x < mapLeft)
+                if (pos.x > mapRight)
                 {
-                    mapLeft = pos.x;
+                    mapRight = pos.x;
                 }
             }
         }
 
-        // Left edge of camera view
-        float screenLeft =
-            Camera.main.transform.position.x -
+        // Right edge of camera view
+        float screenRight =
+            Camera.main.transform.position.x +
             Camera.main.orthographicSize *
             Camera.main.aspect;
 
-        // Small margin so tiles aren't touching edge
-        float padding = tileWidth * 0.5f;
+        // Leave approximately one tile of padding
+        float padding = tileWidth;
 
         // Amount to shift map
         float shiftX =
-            mapLeft -
-            (screenLeft + padding);
+            mapRight -
+            (screenRight - padding);
 
         // Keep map vertically centered
         mapCenter = new Vector3(
@@ -178,7 +176,9 @@ public class IsoMapGenerator : MonoBehaviour
 
         if (isVine)
         {
-            Instantiate(VinePrefab, IsoToWorld(x, y) - mapCenter, Quaternion.identity, transform);
+            Vector3 pos = IsoToWorld(x, y) - mapCenter;
+            pos.z = 2;
+            Instantiate(VinePrefab, pos, Quaternion.identity, transform);
             vines.Add(tileObj);
         }
     }
