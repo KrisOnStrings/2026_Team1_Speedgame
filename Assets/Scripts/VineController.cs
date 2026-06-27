@@ -60,4 +60,9 @@ public class VineController : MonoBehaviour
 
         availableVines.Add(int.Parse(grape.name));
     }
+
+    public void StopGrowing()
+    {
+        CancelInvoke("VineGrow");
+    }
 }

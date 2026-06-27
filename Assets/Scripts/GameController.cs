@@ -23,12 +23,15 @@ public class GameController : MonoBehaviour
     public GameObject DefeatObj;
     public AudioClip DefeatSFX;
     public AudioClip MenuClickSFX;
+    public GameObject FireworkPrefab;
+    public Transform FireworksLoc;
 
     private int mapIndex;
     private int currency;
     private float startTime;
     private float curDayCycle;
     private float targetDayCycle;
+    private List<GameObject> fireworks;
 
     private AudioSource m_Audio;
 
@@ -96,6 +99,13 @@ public class GameController : MonoBehaviour
     {
         mapIndex++;
 
+        CancelInvoke("PlayFireworks");
+        foreach(GameObject firework in fireworks)
+        {
+            Destroy(firework);
+        }
+        fireworks.Clear();
+
         towerMenu.CleanUp();
         vines.Cleanup();
 
@@ -138,7 +148,7 @@ public class GameController : MonoBehaviour
     public void Victory()
     {
         music.SetMusic(MusicController.MusicType.None);
-        CancelInvoke("VineGrow");
+        vines.StopGrowing();
         m_Audio.PlayOneShot(VictorySFX);
 
         if (mapIndex < (Maps.Length - 1))
@@ -150,6 +160,15 @@ public class GameController : MonoBehaviour
             GameOverObj.SetActive(true);
         }
         startTime = -1;
+
+        fireworks = new List<GameObject>();
+        Invoke("PlayFireworks", VictorySFX.length - 2);
+    }
+
+    public void PlayFireworks()
+    {
+        fireworks.Add(Instantiate(FireworkPrefab, FireworksLoc.position, Quaternion.identity));
+        Invoke("PlayFireworks", Random.Range(0.2f, 1f));
     }
 
     public void Defeat()
@@ -157,7 +176,7 @@ public class GameController : MonoBehaviour
         music.SetMusic(MusicController.MusicType.None);
         m_Audio.PlayOneShot(DefeatSFX);
         DefeatObj.SetActive(true);
-        CancelInvoke("VineGrow");
+        vines.StopGrowing();
         startTime = -1;
     }
 }

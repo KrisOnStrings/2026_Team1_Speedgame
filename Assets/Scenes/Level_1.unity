@@ -19398,6 +19398,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928723362}
   m_CullTransparentMesh: 1
+--- !u!1 &1934195961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1934195962}
+  m_Layer: 0
+  m_Name: FireworksLoc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1934195962
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934195961}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1944977137
 GameObject:
   m_ObjectHideFlags: 0
@@ -21185,6 +21216,8 @@ MonoBehaviour:
   DefeatObj: {fileID: 1572843502}
   DefeatSFX: {fileID: 8300000, guid: 4890e15957ae70343abd91a70e259cc2, type: 3}
   MenuClickSFX: {fileID: 8300000, guid: d1492b453d2d84b4a8de073e3ecace43, type: 3}
+  FireworkPrefab: {fileID: 7226121362952674612, guid: 11f0ed096db66254c830996bfd294b87, type: 3}
+  FireworksLoc: {fileID: 1934195962}
 --- !u!4 &2122765472
 Transform:
   m_ObjectHideFlags: 0
@@ -21423,3 +21456,4 @@ SceneRoots:
   - {fileID: 172073287}
   - {fileID: 1278801449}
   - {fileID: 1215854833}
+  - {fileID: 1934195962}
