@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7687811199248488291}
   - component: {fileID: 4549432164932566411}
   m_Layer: 0
-  m_Name: Fox
+  m_Name: OrangeFox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,11 +4,11 @@ public class CollectController : MonoBehaviour
 {
     public int Amount;
 
-    [HideInInspector] public GameController gc;
+    [HideInInspector] public VineController vc;
 
     public void OnMouseDown()
     {
-        gc.HarvestGrape(this);
+        vc.HarvestGrape(this);
         Destroy(gameObject);
     }
 }

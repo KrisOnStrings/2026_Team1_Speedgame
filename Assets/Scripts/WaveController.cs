@@ -25,6 +25,7 @@ public class WaveController : MonoBehaviour
     private int attackersLetGo;
     private float calcMinSpawnTime;
     private float calcMaxSpawnTime;
+    private int totalWavePoints;
 
     private void Start()
     {
@@ -54,6 +55,9 @@ public class WaveController : MonoBehaviour
         curWavePoints = wavePoints[waveIndex];
         attackers = new List<AttackerController>();
 
+        totalWavePoints = 0;
+        foreach (int points in wavePoints)
+            totalWavePoints += points;
 
         Invoke("HandleSubWave", TimeBeforeFirstWave);
     }
@@ -129,6 +133,12 @@ public class WaveController : MonoBehaviour
 
         if (attackersLetGo >= DefeatThreshold)
         {
+            foreach(AttackerController attacker in attackers)
+            {
+                Destroy(attacker);
+            }
+            attackers.Clear();
+
             CancelInvoke("HandleSubWave");
             CancelInvoke("HandleWave");
             gc.Defeat();
@@ -145,5 +155,20 @@ public class WaveController : MonoBehaviour
     public string GetAttackerStatus()
     {
         return $"{attackersLetGo} / {DefeatThreshold}";
+    }
+
+    public float GetWaveProgress()
+    {
+        if (totalWavePoints <= 0)
+            return 1f;
+
+        int remainingPoints = curWavePoints;
+
+        for (int i = waveIndex + 1; i < wavePoints.Length; i++)
+            remainingPoints += wavePoints[i];
+
+        float progress = 1f - ((float)remainingPoints / totalWavePoints);
+
+        return Mathf.Clamp01(progress);
     }
 }

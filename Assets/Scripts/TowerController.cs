@@ -23,6 +23,7 @@ public class TowerController : MonoBehaviour
 
     public float TileYOffset;
 
+    [HideInInspector] public TowerMenuController tmc;
     [HideInInspector] public GameController gc;
     [HideInInspector] public int towerIndex;
 
@@ -146,7 +147,7 @@ public class TowerController : MonoBehaviour
             {
                 placed = true;
                 gc.SpendCurrency(PlaceCost);
-                gc.TowerPlaced(towerIndex);
+                tmc.TowerPlaced(towerIndex);
                 Invoke("CheckAttack", GetAttackSpeed());
             }
             else

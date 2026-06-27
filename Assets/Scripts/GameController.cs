@@ -13,10 +13,9 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI WaveHUD;
     public TowerMenuController towerMenu;
     public WaveController waves;
-    public GameObject[] TowerPrefabs;
-    public GameObject GrapePrefab;
+    public VineController vines;
+    public DayController dayNightCycle;
     public int StartingCurrency;
-    public float VineGrowFrequency;
     public GameObject VictoryObj;
     public AudioClip VictorySFX;
     public GameObject GameOverObj;
@@ -27,10 +26,8 @@ public class GameController : MonoBehaviour
     private int mapIndex;
     private int currency;
     private float startTime;
-    private List<GameObject> towerList;
-    private List<GameObject> grapes;
-    private List<GameObject> vines;
-    private List<int> availableVines;
+    private float curDayCycle;
+    private float targetDayCycle;
 
     private AudioSource m_Audio;
 
@@ -38,12 +35,12 @@ public class GameController : MonoBehaviour
     void Start()
     {
         mapIndex = 0;
+        curDayCycle = 0.2f;
         VictoryObj.SetActive(false);
         DefeatObj.SetActive(false);
         startTime = -1;
-        towerList = new List<GameObject>();
-        grapes = new List<GameObject>();
         towerMenu.gameObject.SetActive(false);
+        dayNightCycle.timeOfDay = curDayCycle;
 
         m_Audio = GetComponent<AudioSource>();
     }
@@ -57,6 +54,18 @@ public class GameController : MonoBehaviour
             FoxHUD.text = waves.GetAttackerStatus();
             TimerHUD.text = Mathf.FloorToInt(Time.time - startTime).ToString();
             WaveHUD.text = waves.GetWaveStatus();
+
+            // Update Day Night Cycle
+            // Level Start: 0.2
+            // Level End: 0.8
+            targetDayCycle = Mathf.Lerp(0.2f, 0.8f, waves.GetWaveProgress());
+
+            if (targetDayCycle > curDayCycle)
+            {
+                curDayCycle += Time.deltaTime * .005f;
+            }
+
+            dayNightCycle.timeOfDay = curDayCycle;
         }
     }
 
@@ -66,6 +75,7 @@ public class GameController : MonoBehaviour
         StartButtonObj.SetActive(false);
 
         startTime = Time.time;
+        curDayCycle = 0.2f;
 
         mapGen.Generate(Maps[mapIndex]);
         mapGen.UpdatePathSprites();
@@ -74,34 +84,29 @@ public class GameController : MonoBehaviour
         waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints);
 
         towerMenu.gameObject.SetActive(true);
-        for (int i = 0; i < TowerPrefabs.Length; i++)
-        {
-            GenerateTower(i);
-        }
+        towerMenu.StartGame();
 
-        vines = mapGen.GetVines();
-        availableVines = new List<int>();
-        for (int i = 0; i < vines.Count; i++) availableVines.Add(i);
-
-        InvokeRepeating("VineGrow", 0.5f, VineGrowFrequency);
+        vines.StartVines(mapGen.GetVines());
     }
 
     public void ContinueButton()
     {
         mapIndex++;
-        foreach(GameObject tower in towerList)
-        {
-            Destroy(tower);
-        }
-        towerList.Clear();
 
-        foreach (GameObject grape in grapes)
-        {
-            Destroy(grape);
-        }
-        grapes.Clear();
+        towerMenu.CleanUp();
+        vines.Cleanup();
 
         VictoryObj.SetActive(false);
+
+        StartButton();
+    }
+
+    public void RetryButton()
+    {
+        towerMenu.CleanUp();
+        vines.Cleanup();
+
+        DefeatObj.SetActive(false);
 
         StartButton();
     }
@@ -110,21 +115,6 @@ public class GameController : MonoBehaviour
     {
         m_Audio.PlayOneShot(MenuClickSFX);
         Application.Quit();
-    }
-
-    public void TowerPlaced(int towerIndex)
-    {
-        GenerateTower(towerIndex);
-    }
-
-    public void GenerateTower(int index)
-    {
-        GameObject tower = Instantiate(TowerPrefabs[index], towerMenu.transform);
-        tower.transform.position = towerMenu.TowerLocations[index].transform.position;
-        tower.name = TowerPrefabs[index].name;
-        tower.GetComponent<TowerController>().gc = this;
-        tower.GetComponent<TowerController>().towerIndex = index;
-        towerList.Add(tower);
     }
 
     public int GetCurrency()
@@ -137,28 +127,9 @@ public class GameController : MonoBehaviour
         currency -= cost;
     }
 
-    public void VineGrow()
+    public void AddCurrency(int amount)
     {
-        if (availableVines.Count > 0)
-        {
-            int rnd = Random.Range(0, availableVines.Count);
-            int vineIndex = availableVines[rnd];
-
-            GameObject grape = Instantiate(GrapePrefab, vines[vineIndex].transform.position, Quaternion.identity);
-            grape.GetComponent<CollectController>().gc = this;
-            grape.name = vineIndex.ToString();
-            grapes.Add(grape);
-
-            availableVines.RemoveAt(rnd);
-        }
-    }
-
-    public void HarvestGrape(CollectController grape)
-    {
-        currency += grape.Amount;
-        grapes.Remove(grape.gameObject);
-
-        availableVines.Add(int.Parse(grape.name));
+        currency += amount;
     }
 
     public void Victory()
