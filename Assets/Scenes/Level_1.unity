@@ -6818,6 +6818,8 @@ MonoBehaviour:
 
     FSGGGGGGGGFF'
   WavePoints: 04000000070000000b00000010000000170000001e000000260000002f0000003900000044000000
+  MinibossWave: 9
+  BossWave: -1
 --- !u!1 &657277600
 GameObject:
   m_ObjectHideFlags: 0
@@ -9068,6 +9070,7 @@ MonoBehaviour:
   - {fileID: 7931925870277321038, guid: b302ec57cd8aa7b4d8bbf0118093d6a4, type: 3}
   - {fileID: 3376467220989359476, guid: 541e51a05f8d54145bf217d5b04e618b, type: 3}
   - {fileID: 4403469225002013419, guid: 7084eb8c7400bac4695d0d1745671ed3, type: 3}
+  Miniboss: {fileID: 2014648596786943686, guid: e80591e6b73808c4db59df3ac5d42d8c, type: 3}
   DefeatThreshold: 6
   TimeBeforeFirstWave: 5
   TimeBetweenWaves: 2
@@ -12135,6 +12138,8 @@ MonoBehaviour:
 
     GSGGGGGGFF'
   WavePoints: 03000000060000000a0000000f000000150000001c00000024000000
+  MinibossWave: -1
+  BossWave: -1
 --- !u!1 &1208043655
 GameObject:
   m_ObjectHideFlags: 0
@@ -19439,6 +19444,8 @@ MonoBehaviour:
 
     FGGGGGGGSGGFF'
   WavePoints: 05000000080000000c00000011000000170000001e000000260000002f00000039000000440000004f00000051000000
+  MinibossWave: 6
+  BossWave: 11
 --- !u!1 &1960039856
 GameObject:
   m_ObjectHideFlags: 0

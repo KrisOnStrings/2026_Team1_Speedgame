@@ -141,133 +141,133 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Game Jam Miniboss Fox Running2 copy_0
+      name: OrangeMiniboss_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 9
-        width: 184
-        height: 186
+        x: 0
+        y: 0
+        width: 230
+        height: 259
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b1a61555d4582c940800000000000000
-      internalID: 5314957077440981531
+      spriteID: f5d74522f8b6be1479e0e77e86f432da
+      internalID: -1242363753
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Game Jam Miniboss Fox Running2 copy_1
+      name: OrangeMiniboss_1
       rect:
         serializedVersion: 2
-        x: 243
-        y: 8
-        width: 183
-        height: 202
+        x: 230
+        y: 0
+        width: 230
+        height: 259
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 853c819542a047bc0800000000000000
-      internalID: -3786390235481849000
+      spriteID: 3b0d2d58b649dad45ab789f717a3a8e1
+      internalID: 714604708
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Game Jam Miniboss Fox Running2 copy_2
+      name: OrangeMiniboss_2
       rect:
         serializedVersion: 2
-        x: 468
-        y: 9
-        width: 184
-        height: 227
+        x: 460
+        y: 0
+        width: 230
+        height: 259
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 28dfa5577962ca160800000000000000
-      internalID: 7038042749624057218
+      spriteID: d49b3c80345597a4f9e4adf64ee725ab
+      internalID: -2037890051
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Game Jam Miniboss Fox Running2 copy_3
+      name: OrangeMiniboss_3
       rect:
         serializedVersion: 2
-        x: 700
-        y: 9
-        width: 185
-        height: 186
+        x: 690
+        y: 0
+        width: 230
+        height: 259
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6c1dd5d6c77aaceb0800000000000000
-      internalID: -4698759108355042874
+      spriteID: bcd135512285d26419ce1fab2d10b381
+      internalID: -671011094
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Game Jam Miniboss Fox Running2 copy_4
+      name: OrangeMiniboss_4
       rect:
         serializedVersion: 2
-        x: 932
-        y: 8
-        width: 185
-        height: 208
+        x: 920
+        y: 0
+        width: 230
+        height: 259
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4c7af300392c95fa0800000000000000
-      internalID: -5811399907524761660
+      spriteID: bb957a7c17ce0d64f82a89cef3935cae
+      internalID: -2115922982
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Game Jam Miniboss Fox Running2 copy_5
+      name: OrangeMiniboss_5
       rect:
         serializedVersion: 2
-        x: 1166
-        y: 8
-        width: 193
-        height: 194
+        x: 1150
+        y: 0
+        width: 230
+        height: 259
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 8b9c3e057ea55b0c0800000000000000
-      internalID: -4560639098101708360
+      spriteID: 355eec13d3e141142a790cb476044103
+      internalID: 915127879
       vertices: []
       indices: 
       edges: []
@@ -276,7 +276,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e2c9dd2b775377e4ebecef5691526304
     internalID: 0
     vertices: []
     indices: 
@@ -284,14 +284,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":230.0,"y":259.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Game Jam Miniboss Fox Running2 copy_0: 5314957077440981531
-      Game Jam Miniboss Fox Running2 copy_1: -3786390235481849000
-      Game Jam Miniboss Fox Running2 copy_2: 7038042749624057218
-      Game Jam Miniboss Fox Running2 copy_3: -4698759108355042874
-      Game Jam Miniboss Fox Running2 copy_4: -5811399907524761660
-      Game Jam Miniboss Fox Running2 copy_5: -4560639098101708360
+      OrangeMiniboss_0: -1242363753
+      OrangeMiniboss_1: 714604708
+      OrangeMiniboss_2: -2037890051
+      OrangeMiniboss_3: -671011094
+      OrangeMiniboss_4: -2115922982
+      OrangeMiniboss_5: 915127879
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

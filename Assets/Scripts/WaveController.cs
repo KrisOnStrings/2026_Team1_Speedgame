@@ -6,6 +6,7 @@ public class WaveController : MonoBehaviour
     public GameController gc;
 
     public GameObject[] AttackerPrefabs;
+    public GameObject Miniboss;
 
     public int DefeatThreshold;
 
@@ -26,6 +27,10 @@ public class WaveController : MonoBehaviour
     private float calcMinSpawnTime;
     private float calcMaxSpawnTime;
     private int totalWavePoints;
+    private int minibossWave;
+
+    private bool minibossSpawned;
+    private bool bossSpawned;
 
     private void Start()
     {
@@ -41,13 +46,16 @@ public class WaveController : MonoBehaviour
         }
     }
 
-    public void StartWaves(List<GameObject> mapPath, int[] levelWavePoints)
+    public void StartWaves(List<GameObject> mapPath, int[] levelWavePoints, int mbWave)
     {
         waveIndex = 0;
         attackersLetGo = 0;
+        minibossSpawned = false;
+        bossSpawned = false;
 
         wavePoints = levelWavePoints;
         path = mapPath;
+        minibossWave = mbWave;
 
         calcMinSpawnTime = MinWaveSpawnTime;
         calcMaxSpawnTime = MaxWaveSpawnTime;
@@ -81,21 +89,31 @@ public class WaveController : MonoBehaviour
 
     public void HandleSubWave()
     {
-        List<GameObject> validAttackers = new List<GameObject>();
-        foreach(GameObject attPrefab in AttackerPrefabs)
+        if (!minibossSpawned & (waveIndex == minibossWave))
         {
-            if (waveIndex >= attPrefab.GetComponent<AttackerController>().StartSpawnWave)
-            {
-                validAttackers.Add(attPrefab);
-            }
+            minibossSpawned = true;
+            GameObject attacker = Instantiate(Miniboss, path[0].transform.position, Quaternion.identity);
+            attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
+            attackers.Add(attacker.GetComponent<AttackerController>());
+            curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
         }
-        int rnd = Random.Range(0, validAttackers.Count);
+        else
+        {
+            List<GameObject> validAttackers = new List<GameObject>();
+            foreach (GameObject attPrefab in AttackerPrefabs)
+            {
+                if (waveIndex >= attPrefab.GetComponent<AttackerController>().StartSpawnWave)
+                {
+                    validAttackers.Add(attPrefab);
+                }
+            }
+            int rnd = Random.Range(0, validAttackers.Count);
 
-        GameObject attacker = Instantiate(validAttackers[rnd], path[0].transform.position, Quaternion.identity);
-        attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
-        attackers.Add(attacker.GetComponent<AttackerController>());
-
-        curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
+            GameObject attacker = Instantiate(validAttackers[rnd], path[0].transform.position, Quaternion.identity);
+            attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
+            attackers.Add(attacker.GetComponent<AttackerController>());
+            curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
+        }
 
         if (curWavePoints <= 0)
         {

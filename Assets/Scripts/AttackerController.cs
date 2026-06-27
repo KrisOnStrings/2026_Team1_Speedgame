@@ -8,6 +8,23 @@ public class AttackerController : MonoBehaviour
     public float moveSpeed = 2f;
     public int StartSpawnWave;
 
+    public float LeftXScale = 1;
+    public float LeftYScale = 1;
+    public float LeftZRot = 25f;
+    public float LeftAnimDir = 1;
+    public float UpXScale = 1;
+    public float UpYScale = 1;
+    public float UpZRot = -15f;
+    public float UpAnimDir = 1;
+    public float DownXScale = -1;
+    public float DownYScale = 1;
+    public float DownZRot = -40f;
+    public float DownAnimDir = 1;
+    public float RightXScale = -1;
+    public float RightYScale = 1;
+    public float RightZRot = 25f;
+    public float RightAnimDir = 1;
+
     [HideInInspector] public WaveController wc;
     [HideInInspector] public GameController gc;
 
@@ -19,8 +36,12 @@ public class AttackerController : MonoBehaviour
     private float origXScale;
     private float origYScale;
 
+    private Animator m_Anim;
+
     public void Initialize(List<GameObject> intended_path, WaveController new_wc, GameController new_gc)
     {
+        m_Anim = GetComponent<Animator>();
+
         wc = new_wc;
         gc = new_gc;
         path = intended_path;
@@ -68,14 +89,16 @@ public class AttackerController : MonoBehaviour
             if (dir.y > 0)
             {
                 // Left (world down-left)
-                transform.localScale = new Vector3(origXScale, origYScale, 1);
-                transform.rotation = Quaternion.Euler(0, 0, 25f);
+                transform.localScale = new Vector3(LeftXScale * origXScale, LeftXScale * origYScale, 1);
+                transform.rotation = Quaternion.Euler(0, 0, LeftZRot);
+                m_Anim.SetFloat("Dir", LeftAnimDir);
             }
             else
             {
                 // Up (world up-left)
-                transform.localScale = new Vector3(origXScale, origYScale, 1);
-                transform.rotation = Quaternion.Euler(0, 0, -15f);
+                transform.localScale = new Vector3(UpXScale * origXScale, UpYScale * origYScale, 1);
+                transform.rotation = Quaternion.Euler(0, 0, UpZRot);
+                m_Anim.SetFloat("Dir", UpAnimDir);
             }
         }
         else
@@ -83,14 +106,16 @@ public class AttackerController : MonoBehaviour
             if (dir.y > 0)
             {
                 // Down (world down-right)
-                transform.localScale = new Vector3(-origXScale, origYScale, 1);
-                transform.rotation = Quaternion.Euler(0, 0, -40f);
+                transform.localScale = new Vector3(DownXScale * origXScale, DownYScale * origYScale, 1);
+                transform.rotation = Quaternion.Euler(0, 0, DownZRot);
+                m_Anim.SetFloat("Dir", DownAnimDir);
             }
             else
             {
                 // Right (world up-right)
-                transform.localScale = new Vector3(-origXScale, origYScale, 1);
-                transform.rotation = Quaternion.Euler(0, 0, 25f);
+                transform.localScale = new Vector3(RightXScale * origXScale, RightYScale * origYScale, 1);
+                transform.rotation = Quaternion.Euler(0, 0, RightZRot);
+                m_Anim.SetFloat("Dir", RightAnimDir);
             }
         }
 

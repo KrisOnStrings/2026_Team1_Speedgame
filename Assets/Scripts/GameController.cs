@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour
         mapGen.UpdatePathSprites();
 
         currency = StartingCurrency;
-        waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints);
+        waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints, Maps[mapIndex].MinibossWave);
 
         towerMenu.gameObject.SetActive(true);
         towerMenu.StartGame();
