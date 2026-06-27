@@ -7,6 +7,7 @@ public class WaveController : MonoBehaviour
 
     public GameObject[] AttackerPrefabs;
     public GameObject Miniboss;
+    public GameObject Boss;
 
     public int DefeatThreshold;
 
@@ -28,9 +29,11 @@ public class WaveController : MonoBehaviour
     private float calcMaxSpawnTime;
     private int totalWavePoints;
     private int minibossWave;
+    private int bossWave;
 
     private bool minibossSpawned;
     private bool bossSpawned;
+    private bool isDefeated;
 
     private void Start()
     {
@@ -39,15 +42,16 @@ public class WaveController : MonoBehaviour
 
     private void Update()
     {
-        if (waveWait && (attackers.Count == 0))
+        if (waveWait && !isDefeated && (attackers.Count == 0))
         {
             waveWait = false;
             Invoke("HandleWave", TimeBetweenWaves);
         }
     }
 
-    public void StartWaves(List<GameObject> mapPath, int[] levelWavePoints, int mbWave)
+    public void StartWaves(List<GameObject> mapPath, int[] levelWavePoints, int mbWave, int bWave)
     {
+        isDefeated = false;
         waveIndex = 0;
         attackersLetGo = 0;
         minibossSpawned = false;
@@ -56,6 +60,7 @@ public class WaveController : MonoBehaviour
         wavePoints = levelWavePoints;
         path = mapPath;
         minibossWave = mbWave;
+        bossWave = bWave;
 
         calcMinSpawnTime = MinWaveSpawnTime;
         calcMaxSpawnTime = MaxWaveSpawnTime;
@@ -102,6 +107,14 @@ public class WaveController : MonoBehaviour
         {
             minibossSpawned = true;
             GameObject attacker = Instantiate(Miniboss, path[0].transform.position, Quaternion.identity);
+            attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
+            attackers.Add(attacker.GetComponent<AttackerController>());
+            curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
+        }
+        else if (!bossSpawned & (waveIndex == bossWave))
+        {
+            bossSpawned = true;
+            GameObject attacker = Instantiate(Boss, path[0].transform.position, Quaternion.identity);
             attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
             attackers.Add(attacker.GetComponent<AttackerController>());
             curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
@@ -168,7 +181,8 @@ public class WaveController : MonoBehaviour
 
         if (attackersLetGo >= DefeatThreshold)
         {
-            foreach(AttackerController attacker in attackers)
+            isDefeated = true;
+            foreach (AttackerController attacker in attackers)
             {
                 Destroy(attacker);
             }

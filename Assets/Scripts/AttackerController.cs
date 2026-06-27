@@ -7,6 +7,7 @@ public class AttackerController : MonoBehaviour
     public float MaxHealth = 5f;
     public float moveSpeed = 2f;
     public int StartSpawnWave;
+    public float YOffset = 0;
 
     public float LeftXScale = 1;
     public float LeftYScale = 1;
@@ -79,6 +80,7 @@ public class AttackerController : MonoBehaviour
         }
 
         Vector3 target = path[currentPoint].transform.position;
+        target.y += YOffset;
 
         // Direction toward current waypoint
         Vector3 dir = (target - transform.position).normalized;
@@ -89,14 +91,18 @@ public class AttackerController : MonoBehaviour
             if (dir.y > 0)
             {
                 // Left (world down-left)
-                transform.localScale = new Vector3(LeftXScale * origXScale, LeftXScale * origYScale, 1);
+                float xScale = (LeftXScale == 1) ? origXScale : -origXScale;
+                float yScale = (LeftYScale == 1) ? origYScale : -origYScale;
+                transform.localScale = new Vector3(xScale, yScale, 1);
                 transform.rotation = Quaternion.Euler(0, 0, LeftZRot);
                 m_Anim.SetFloat("Dir", LeftAnimDir);
             }
             else
             {
                 // Up (world up-left)
-                transform.localScale = new Vector3(UpXScale * origXScale, UpYScale * origYScale, 1);
+                float xScale = (UpXScale == 1) ? origXScale : -origXScale;
+                float yScale = (UpYScale == 1) ? origYScale : -origYScale;
+                transform.localScale = new Vector3(xScale, yScale, 1);
                 transform.rotation = Quaternion.Euler(0, 0, UpZRot);
                 m_Anim.SetFloat("Dir", UpAnimDir);
             }
@@ -106,14 +112,18 @@ public class AttackerController : MonoBehaviour
             if (dir.y > 0)
             {
                 // Down (world down-right)
-                transform.localScale = new Vector3(DownXScale * origXScale, DownYScale * origYScale, 1);
+                float xScale = (DownXScale == 1) ? origXScale : -origXScale;
+                float yScale = (DownYScale == 1) ? origYScale : -origYScale;
+                transform.localScale = new Vector3(xScale, yScale, 1);
                 transform.rotation = Quaternion.Euler(0, 0, DownZRot);
                 m_Anim.SetFloat("Dir", DownAnimDir);
             }
             else
             {
                 // Right (world up-right)
-                transform.localScale = new Vector3(RightXScale * origXScale, RightYScale * origYScale, 1);
+                float xScale = (RightXScale == 1) ? origXScale : -origXScale;
+                float yScale = (RightYScale == 1) ? origYScale : -origYScale;
+                transform.localScale = new Vector3(xScale, yScale, 1);
                 transform.rotation = Quaternion.Euler(0, 0, RightZRot);
                 m_Anim.SetFloat("Dir", RightAnimDir);
             }

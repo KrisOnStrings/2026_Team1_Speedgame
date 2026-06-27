@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     public IsoMapGenerator mapGen;
     public Map[] Maps;
-    public GameObject StartButtonObj;
+    public GameObject TitleObj;
     public TextMeshProUGUI CurrencyHUD;
     public TextMeshProUGUI FoxHUD;
     public TextMeshProUGUI TimerHUD;
@@ -40,6 +40,7 @@ public class GameController : MonoBehaviour
     {
         mapIndex = 0;
         curDayCycle = 0.2f;
+        TitleObj.SetActive(true);
         VictoryObj.SetActive(false);
         DefeatObj.SetActive(false);
         startTime = -1;
@@ -78,7 +79,7 @@ public class GameController : MonoBehaviour
     {
         music.SetMusic(MusicController.MusicType.Day);
         m_Audio.PlayOneShot(MenuClickSFX);
-        StartButtonObj.SetActive(false);
+        TitleObj.SetActive(false);
 
         startTime = Time.time;
         curDayCycle = 0.2f;
@@ -87,7 +88,7 @@ public class GameController : MonoBehaviour
         mapGen.UpdatePathSprites();
 
         currency = StartingCurrency;
-        waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints, Maps[mapIndex].MinibossWave);
+        waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints, Maps[mapIndex].MinibossWave, Maps[mapIndex].BossWave);
 
         towerMenu.gameObject.SetActive(true);
         towerMenu.StartGame();
