@@ -85,6 +85,15 @@ public class WaveController : MonoBehaviour
         {
             gc.Victory();
         }
+
+        if (curWavePoints >= (totalWavePoints * 0.5f))
+        {
+            gc.music.SetMusic(MusicController.MusicType.Night);
+        }
+        else if (waveIndex == (wavePoints.Length - 1))
+        {
+            gc.music.SetMusic(MusicController.MusicType.Boss);
+        }
     }
 
     public void HandleSubWave()

@@ -11644,6 +11644,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1150839355}
+  - component: {fileID: 1150839356}
   - component: {fileID: 1150839354}
   m_Layer: 0
   m_Name: Music
@@ -11663,9 +11664,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 46bc2b3f2ada0db45b8802699d9e9907, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.356
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -11764,6 +11765,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1150839356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150839353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4056bf5109d604db94250bb0387d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicController
+  DayMusic: {fileID: 8300000, guid: 46bc2b3f2ada0db45b8802699d9e9907, type: 3}
+  NightMusic: {fileID: 8300000, guid: 2f682d27080557741ad8151240355170, type: 3}
+  BossMusic: {fileID: 8300000, guid: 5c7c6286f00c9a8438723e135ef414ca, type: 3}
+  FadeSpeed: 1.5
+  MaxVolume: 0.4
 --- !u!1 &1165357785
 GameObject:
   m_ObjectHideFlags: 0
@@ -18005,7 +18023,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1847123705
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21159,6 +21177,7 @@ MonoBehaviour:
   waves: {fileID: 926426407}
   vines: {fileID: 1656148808}
   dayNightCycle: {fileID: 1215854832}
+  music: {fileID: 1150839356}
   StartingCurrency: 3
   VictoryObj: {fileID: 1847123704}
   VictorySFX: {fileID: 8300000, guid: d9f2a6b73c19e86408a16b6de67f9bc2, type: 3}

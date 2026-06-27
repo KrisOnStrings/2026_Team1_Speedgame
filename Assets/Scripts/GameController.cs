@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
     public WaveController waves;
     public VineController vines;
     public DayController dayNightCycle;
+    public MusicController music;
     public int StartingCurrency;
     public GameObject VictoryObj;
     public AudioClip VictorySFX;
@@ -41,6 +42,7 @@ public class GameController : MonoBehaviour
         startTime = -1;
         towerMenu.gameObject.SetActive(false);
         dayNightCycle.timeOfDay = curDayCycle;
+        music.SetMusic(MusicController.MusicType.Day);
 
         m_Audio = GetComponent<AudioSource>();
     }
@@ -71,6 +73,7 @@ public class GameController : MonoBehaviour
 
     public void StartButton()
     {
+        music.SetMusic(MusicController.MusicType.Day);
         m_Audio.PlayOneShot(MenuClickSFX);
         StartButtonObj.SetActive(false);
 
@@ -134,6 +137,7 @@ public class GameController : MonoBehaviour
 
     public void Victory()
     {
+        music.SetMusic(MusicController.MusicType.None);
         CancelInvoke("VineGrow");
         m_Audio.PlayOneShot(VictorySFX);
 
@@ -150,6 +154,7 @@ public class GameController : MonoBehaviour
 
     public void Defeat()
     {
+        music.SetMusic(MusicController.MusicType.None);
         m_Audio.PlayOneShot(DefeatSFX);
         DefeatObj.SetActive(true);
         CancelInvoke("VineGrow");
