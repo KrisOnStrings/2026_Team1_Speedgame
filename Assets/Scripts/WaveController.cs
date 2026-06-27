@@ -81,9 +81,17 @@ public class WaveController : MonoBehaviour
 
     public void HandleSubWave()
     {
-        int rnd = Random.Range(0, AttackerPrefabs.Length);
+        List<GameObject> validAttackers = new List<GameObject>();
+        foreach(GameObject attPrefab in AttackerPrefabs)
+        {
+            if (waveIndex >= attPrefab.GetComponent<AttackerController>().StartSpawnWave)
+            {
+                validAttackers.Add(attPrefab);
+            }
+        }
+        int rnd = Random.Range(0, validAttackers.Count);
 
-        GameObject attacker = Instantiate(AttackerPrefabs[rnd], path[0].transform.position, Quaternion.identity);
+        GameObject attacker = Instantiate(validAttackers[rnd], path[0].transform.position, Quaternion.identity);
         attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
         attackers.Add(attacker.GetComponent<AttackerController>());
 

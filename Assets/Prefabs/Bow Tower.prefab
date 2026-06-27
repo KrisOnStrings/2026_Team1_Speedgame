@@ -1153,13 +1153,14 @@ MonoBehaviour:
   WhooshSFX: {fileID: 8300000, guid: f5dd3eb3f2e18d54995806808aad4a39, type: 3}
   PlaceCost: 3
   UpgradeCost: 3
-  Range: 3
+  Range: 1.5
   Damage: 1
   AttackSpeed: 1
   UpgradeRange: 1
   UpgradeDamage: 0
   UpgradeAttackSpeed: 0.1
   TileYOffset: 0.75
+  tmc: {fileID: 0}
   gc: {fileID: 0}
   towerIndex: 0
 --- !u!212 &704432272270676260

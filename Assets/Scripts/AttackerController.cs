@@ -6,6 +6,7 @@ public class AttackerController : MonoBehaviour
     public int WavePoints;
     public float MaxHealth = 5f;
     public float moveSpeed = 2f;
+    public int StartSpawnWave;
 
     [HideInInspector] public WaveController wc;
     [HideInInspector] public GameController gc;
@@ -74,7 +75,7 @@ public class AttackerController : MonoBehaviour
             {
                 // Up (world up-left)
                 transform.localScale = new Vector3(origXScale, origYScale, 1);
-                transform.rotation = Quaternion.Euler(0, 0, -40f);
+                transform.rotation = Quaternion.Euler(0, 0, -15f);
             }
         }
         else

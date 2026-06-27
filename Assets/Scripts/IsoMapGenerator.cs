@@ -211,7 +211,7 @@ public class IsoMapGenerator : MonoBehaviour
                     point.x,
                     point.y
                 ) - mapCenter;
-
+            waypoint.transform.position += new Vector3(0, 0.08f, 0);
             waypoints.Add(waypoint);
         }
 

@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour
 
             if (targetDayCycle > curDayCycle)
             {
-                curDayCycle += Time.deltaTime * .005f;
+                curDayCycle += Time.deltaTime * .0075f;
             }
 
             dayNightCycle.timeOfDay = curDayCycle;

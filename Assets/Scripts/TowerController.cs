@@ -13,7 +13,7 @@ public class TowerController : MonoBehaviour
     public int PlaceCost;
     public int UpgradeCost;
 
-    public int Range;
+    public float Range;
     public int Damage;
     public float AttackSpeed;
 
@@ -173,7 +173,7 @@ public class TowerController : MonoBehaviour
         Invoke("CheckAttack", GetAttackSpeed());
     }
 
-    public int GetRange()
+    public float GetRange()
     {
         return Range + ((level - 1) * UpgradeRange);
     }
