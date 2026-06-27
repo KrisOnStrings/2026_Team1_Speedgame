@@ -46,6 +46,7 @@ public class VineController : MonoBehaviour
             GameObject grape = Instantiate(GrapePrefab, vines[vineIndex].transform.position, Quaternion.identity);
             grape.GetComponent<CollectController>().vc = this;
             grape.name = vineIndex.ToString();
+            grape.transform.position += new Vector3(0, 0, -2); // Ensure Z is closer to the camera than other colliders so it is clickable
             grapes.Add(grape);
 
             availableVines.RemoveAt(rnd);
