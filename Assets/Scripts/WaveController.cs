@@ -36,6 +36,11 @@ public class WaveController : MonoBehaviour
     private bool bossSpawned;
     private bool isDefeated;
 
+    private void Awake()
+    {
+        attackers = null;
+    }
+
     private void Start()
     {
         waveWait = false;
@@ -160,6 +165,8 @@ public class WaveController : MonoBehaviour
         AttackerController bestTarget = null;
         int bestProgress = -1;
 
+        if (attackers == null) return bestTarget;
+
         foreach (AttackerController attacker in attackers)
         {
             float distance = Vector3.Distance(tower.transform.position, attacker.transform.position);
@@ -226,5 +233,33 @@ public class WaveController : MonoBehaviour
         float progress = 1f - ((float)remainingPoints / totalWavePoints);
 
         return Mathf.Clamp01(progress);
+    }
+
+    public void TutorialSpawn1Fox(List<GameObject> mapPath)
+    {
+        path = mapPath;
+        attackers = new List<AttackerController>();
+
+        GameObject attacker = Instantiate(AttackerPrefabs[0], path[0].transform.position, Quaternion.identity);
+        attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
+        attackers.Add(attacker.GetComponent<AttackerController>());
+        curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
+    }
+
+    public void TutorialSpawn2Foxes()
+    {
+        GameObject attacker = Instantiate(AttackerPrefabs[0], path[0].transform.position, Quaternion.identity);
+        attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
+        attackers.Add(attacker.GetComponent<AttackerController>());
+        curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
+        Invoke("TutorialStaggerSpawnFox", 0.5f);
+    }
+
+    public void TutorialStaggerSpawnFox()
+    {
+        GameObject attacker = Instantiate(AttackerPrefabs[1], path[0].transform.position, Quaternion.identity);
+        attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
+        attackers.Add(attacker.GetComponent<AttackerController>());
+        curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
     }
 }

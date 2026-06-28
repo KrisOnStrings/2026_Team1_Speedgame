@@ -26,6 +26,17 @@ public class TowerMenuController : MonoBehaviour
         }
     }
 
+    public void AddFirstTower()
+    {
+        towerList = new List<GameObject>();
+        GenerateTower(0);
+    }
+
+    public void AddSecondTower()
+    {
+        GenerateTower(1);
+    }
+
     public void GenerateTower(int index)
     {
         GameObject tower = Instantiate(TowerPrefabs[index], transform);

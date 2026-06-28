@@ -150,6 +150,20 @@ public class AttackerController : MonoBehaviour
 
     public void Die()
     {
+        TutorialController tc = gc as TutorialController;
+        if (tc)
+        {
+            if (tc.GetTutorialStep() == 7)
+            {
+                tc.FoxDefeated();
+            }
+
+            if (tc.GetTutorialStep() == 13)
+            {
+                tc.FoxesDefeated();
+            }
+        }
+
         wc.AttackerDie(this);
         Destroy(gameObject);
     }

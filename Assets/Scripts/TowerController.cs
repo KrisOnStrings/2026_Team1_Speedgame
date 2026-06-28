@@ -95,23 +95,73 @@ public class TowerController : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    private void OnMouseUp()
     {
         if (!placed)
         {
-            // Let the user place the tower
-            PreTowerHUD.transform.parent.gameObject.SetActive(false);
-            PostTowerHUD.transform.parent.gameObject.SetActive(false);
 
-            if (gc.GetCurrency() >= PlaceCost)
+            if (!followMouse)
             {
-                followMouse = true;
-                origPos = transform.position;
-                placing = true;
+                // Let the user place the tower
+                PreTowerHUD.transform.parent.gameObject.SetActive(false);
+                PostTowerHUD.transform.parent.gameObject.SetActive(false);
+
+                if (gc.GetCurrency() >= PlaceCost)
+                {
+                    followMouse = true;
+                    origPos = transform.position;
+                    placing = true;
+
+                    TutorialController tc = gc as TutorialController;
+                    if (tc)
+                    {
+                        if (tc.GetTutorialStep() == 4)
+                        {
+                            tc.ClickTower();
+                        }
+                    }
+                }
+                else
+                {
+                    m_Audio.PlayOneShot(MisPlaceSFX);
+                }
             }
             else
             {
-                m_Audio.PlayOneShot(MisPlaceSFX);
+                placing = false;
+                followMouse = false;
+
+                SpriteRenderer[] rends = GetComponentsInChildren<SpriteRenderer>();
+                foreach (SpriteRenderer rend in rends)
+                {
+                    rend.color = Color.white;
+                }
+
+                if (canPlace)
+                {
+                    placed = true;
+                    gc.SpendCurrency(PlaceCost);
+                    tmc.TowerPlaced(towerIndex);
+                    Invoke("CheckAttack", GetAttackSpeed());
+
+                    TutorialController tc = gc as TutorialController;
+                    if (tc)
+                    {
+                        if (tc.GetTutorialStep() == 5)
+                        {
+                            tc.PlaceDangerDoveTower();
+                        }
+                        else if (tc.GetTutorialStep() == 11)
+                        {
+                            tc.PlaceRamrockTower();
+                        }
+                    }
+                }
+                else
+                {
+                    m_Audio.PlayOneShot(MisPlaceSFX);
+                    transform.position = origPos;
+                }
             }
         }
         else
@@ -126,34 +176,6 @@ public class TowerController : MonoBehaviour
             else
             {
                 m_Audio.PlayOneShot(MisPlaceSFX);
-            }
-        }
-    }
-
-    private void OnMouseUp()
-    {
-        if (followMouse)
-        {
-            placing = false;
-            followMouse = false;
-
-            SpriteRenderer[] rends = GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer rend in rends)
-            {
-                rend.color = Color.white;
-            }
-
-            if (canPlace)
-            {
-                placed = true;
-                gc.SpendCurrency(PlaceCost);
-                tmc.TowerPlaced(towerIndex);
-                Invoke("CheckAttack", GetAttackSpeed());
-            }
-            else
-            {
-                m_Audio.PlayOneShot(MisPlaceSFX);
-                transform.position = origPos;
             }
         }
     }

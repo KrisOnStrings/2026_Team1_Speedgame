@@ -56,9 +56,12 @@ public class VineController : MonoBehaviour
     public void HarvestGrape(CollectController grape)
     {
         gc.AddCurrency(grape.Amount);
-        grapes.Remove(grape.gameObject);
 
-        availableVines.Add(int.Parse(grape.name));
+        if (grape.name != "TutorialGrape")
+        {
+            grapes.Remove(grape.gameObject);
+            availableVines.Add(int.Parse(grape.name));
+        }
     }
 
     public void StopGrowing()
