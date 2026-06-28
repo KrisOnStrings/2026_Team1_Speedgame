@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -25,14 +26,14 @@ public class GameController : MonoBehaviour
     public GameObject FireworkPrefab;
     public Transform FireworksLoc;
 
-    private int mapIndex;
-    private int currency;
-    private float startTime;
+    [SerializeField] protected int mapIndex;
+    [SerializeField] protected int currency;
+    [SerializeField] protected float startTime;
     private float curDayCycle;
     private float targetDayCycle;
     private List<GameObject> fireworks;
 
-    private AudioSource m_Audio;
+    [SerializeField] protected AudioSource m_Audio;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -94,7 +95,7 @@ public class GameController : MonoBehaviour
         vines.StartVines(mapGen.GetVines());
     }
 
-    public void ContinueButton()
+    public virtual void ContinueButton()
     {
         mapIndex++;
 
@@ -126,9 +127,10 @@ public class GameController : MonoBehaviour
     public void TutorialButton()
     {
         m_Audio.PlayOneShot(MenuClickSFX);
+        SceneManager.LoadScene("Tutorial");
     }
 
-    public void QuitButton()
+    public virtual void QuitButton()
     {
         m_Audio.PlayOneShot(MenuClickSFX);
         Application.Quit();
@@ -149,7 +151,7 @@ public class GameController : MonoBehaviour
         currency += amount;
     }
 
-    public void Victory()
+    public virtual void Victory()
     {
         music.SetMusic(MusicController.MusicType.None);
         vines.StopGrowing();
@@ -175,7 +177,7 @@ public class GameController : MonoBehaviour
         Invoke("PlayFireworks", Random.Range(0.2f, 1f));
     }
 
-    public void Defeat()
+    public virtual void Defeat()
     {
         music.SetMusic(MusicController.MusicType.None);
         m_Audio.PlayOneShot(DefeatSFX);
