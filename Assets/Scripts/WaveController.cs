@@ -8,6 +8,7 @@ public class WaveController : MonoBehaviour
     public GameObject[] AttackerPrefabs;
     public GameObject Miniboss;
     public GameObject Boss;
+    public Splash WaveSplash;
 
     public int DefeatThreshold;
 
@@ -45,6 +46,8 @@ public class WaveController : MonoBehaviour
         if (waveWait && !isDefeated && (attackers.Count == 0))
         {
             waveWait = false;
+            waveIndex++;
+            WaveSplash.Show(GetWaveStatus());
             Invoke("HandleWave", TimeBetweenWaves);
         }
     }
@@ -72,13 +75,17 @@ public class WaveController : MonoBehaviour
         foreach (int points in wavePoints)
             totalWavePoints += points;
 
+        Invoke("SplashWave", 1f);
         Invoke("HandleSubWave", TimeBeforeFirstWave);
+    }
+
+    public void SplashWave()
+    {
+        WaveSplash.Show(GetWaveStatus());
     }
 
     public void HandleWave()
     {
-        waveIndex++;
-
         if (waveIndex < wavePoints.Length)
         {
             curWavePoints = wavePoints[waveIndex];
@@ -198,7 +205,7 @@ public class WaveController : MonoBehaviour
     {
         int curWave = waveIndex + 1;
         if (curWave > wavePoints.Length) curWave = wavePoints.Length;
-        return $"{curWave} / {wavePoints.Length}";
+        return $"WAVE {curWave} / {wavePoints.Length}";
     }
 
     public string GetAttackerStatus()

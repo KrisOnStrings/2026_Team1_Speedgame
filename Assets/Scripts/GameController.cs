@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI CurrencyHUD;
     public TextMeshProUGUI FoxHUD;
     public TextMeshProUGUI TimerHUD;
-    public TextMeshProUGUI WaveHUD;
     public TowerMenuController towerMenu;
     public WaveController waves;
     public VineController vines;
@@ -59,7 +58,6 @@ public class GameController : MonoBehaviour
             CurrencyHUD.text = currency.ToString();
             FoxHUD.text = waves.GetAttackerStatus();
             TimerHUD.text = Mathf.FloorToInt(Time.time - startTime).ToString();
-            WaveHUD.text = waves.GetWaveStatus();
 
             // Update Day Night Cycle
             // Level Start: 0.2
