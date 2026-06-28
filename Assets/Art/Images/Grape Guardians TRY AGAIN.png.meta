@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 67793595e7b8ecf4e87a35f9cca9b42d
+guid: dcc075886b8169f43a1f31ad3813034d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2027930145844100893
-    second: Tower1_0
+      213: 3221857288628031340
+    second: Grape Guardians TRY AGAIN_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tower1_0
+      name: Grape Guardians TRY AGAIN_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 252
-        height: 338
+        x: 33
+        y: 21
+        width: 588
+        height: 115
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d1ff75429b7a42c10800000000000000
-      internalID: 2027930145844100893
+      spriteID: c6f4da5422656bc20800000000000000
+      internalID: 3221857288628031340
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Tower1_0: 2027930145844100893
+      Grape Guardians TRY AGAIN_0: 3221857288628031340
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

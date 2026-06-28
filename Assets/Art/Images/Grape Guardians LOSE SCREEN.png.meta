@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a0728ce2c70e64e4ea64e1161163686d
+guid: 504e6cd65b9769348aa90a5d70aacc33
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 981883861740967632
-    second: Game Jam Vines_0
+      213: -5215235214655784444
+    second: Grape Guardians LOSE SCREEN_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Game Jam Vines_0
+      name: Grape Guardians LOSE SCREEN_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 2
-        width: 108
-        height: 141
+        x: 56
+        y: 19
+        width: 1296
+        height: 867
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0d652c58b2a50ad00800000000000000
-      internalID: 981883861740967632
+      spriteID: 40a755a2433cf97b0800000000000000
+      internalID: -5215235214655784444
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Game Jam Vines_0: 981883861740967632
+      Grape Guardians LOSE SCREEN_0: -5215235214655784444
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

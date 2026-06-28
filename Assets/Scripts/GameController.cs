@@ -123,6 +123,11 @@ public class GameController : MonoBehaviour
         StartButton();
     }
 
+    public void TutorialButton()
+    {
+        m_Audio.PlayOneShot(MenuClickSFX);
+    }
+
     public void QuitButton()
     {
         m_Audio.PlayOneShot(MenuClickSFX);
