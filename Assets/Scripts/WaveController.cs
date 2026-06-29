@@ -193,14 +193,9 @@ public class WaveController : MonoBehaviour
     {
         attackersLetGo++;
 
-        if (attackersLetGo >= DefeatThreshold)
+        if (!isDefeated && (attackersLetGo >= DefeatThreshold))
         {
             isDefeated = true;
-            foreach (AttackerController attacker in attackers)
-            {
-                Destroy(attacker);
-            }
-            attackers.Clear();
 
             CancelInvoke("HandleSubWave");
             CancelInvoke("HandleWave");
@@ -261,5 +256,14 @@ public class WaveController : MonoBehaviour
         attacker.GetComponent<AttackerController>().Initialize(new List<GameObject>(path), this, gc);
         attackers.Add(attacker.GetComponent<AttackerController>());
         curWavePoints -= attacker.GetComponent<AttackerController>().WavePoints;
+    }
+
+    public void CleanUp()
+    {
+        foreach(AttackerController attacker in attackers)
+        {
+            Destroy(attacker.gameObject);
+        }
+        attackers.Clear();
     }
 }

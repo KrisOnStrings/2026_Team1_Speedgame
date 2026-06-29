@@ -48,6 +48,22 @@ public class TowerMenuController : MonoBehaviour
         towerList.Add(tower);
     }
 
+    public void StartPlacingTower()
+    {
+        foreach(GameObject tower in towerList)
+        {
+            tower.GetComponent<TowerController>().DisableCollider();
+        }
+    }
+
+    public void DonePlacingTower()
+    {
+        foreach (GameObject tower in towerList)
+        {
+            tower.GetComponent<TowerController>().EnableCollider();
+        }
+    }
+
     public void TowerPlaced(int towerIndex)
     {
         GenerateTower(towerIndex);

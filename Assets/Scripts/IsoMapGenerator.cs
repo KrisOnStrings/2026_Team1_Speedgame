@@ -20,6 +20,8 @@ public class IsoMapGenerator : MonoBehaviour
     public float tileWidth = 1.32f;
     public float tileHeight = 0.66f;
 
+    private int height;
+    private int width;
     private char[,] map;
     private Vector3 mapCenter;
     private List<GameObject> vines;
@@ -47,8 +49,8 @@ public class IsoMapGenerator : MonoBehaviour
                 .Trim()
                 .Split('\n');
 
-        int height = rows.Length;
-        int width = rows[0].Length;
+        height = rows.Length;
+        width = rows[0].Length;
 
         map = new char[width, height];
 
@@ -420,6 +422,20 @@ public class IsoMapGenerator : MonoBehaviour
             {
                 tile.GetComponent<SpriteRenderer>()
                     .sprite = sprite;
+            }
+        }
+    }
+
+    public void Cleanup()
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (tileLookup.ContainsKey(new Vector2Int(i, j)))
+                {
+                    tileLookup[new Vector2Int(i, j)].GetComponent<TileController>().isOccupied = false;
+                }
             }
         }
     }

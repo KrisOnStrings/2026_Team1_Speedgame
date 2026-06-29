@@ -118,6 +118,8 @@ public class GameController : MonoBehaviour
     {
         towerMenu.CleanUp();
         vines.Cleanup();
+        waves.CleanUp();
+        mapGen.Cleanup();
 
         DefeatObj.SetActive(false);
 

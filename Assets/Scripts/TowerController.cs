@@ -9,6 +9,7 @@ public class TowerController : MonoBehaviour
     public TextMeshPro PostTowerUpgradeHUD;
     public AudioClip MisPlaceSFX;
     public AudioClip WhooshSFX;
+    public AudioClip PlacementSFX;
 
     public int PlaceCost;
     public int UpgradeCost;
@@ -33,6 +34,8 @@ public class TowerController : MonoBehaviour
     private float zDistance;
     private Vector3 origPos;
     private int level;
+    Collider2D collider;
+    private TileController tTile;
 
     private AudioSource m_Audio;
 
@@ -48,7 +51,9 @@ public class TowerController : MonoBehaviour
         placed = false;
         canPlace = false;
         zDistance = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
+        tTile = null;
 
+        collider = GetComponent<Collider2D>();
         m_Audio = GetComponent<AudioSource>();
     }
 
@@ -77,7 +82,8 @@ public class TowerController : MonoBehaviour
 
                     if (!tile.isOccupied && tile.isPlaceable)
                     {
-                        foreach(SpriteRenderer rend in rends)
+                        tTile = tile;
+                        foreach (SpriteRenderer rend in rends)
                         {
                             rend.color = Color.white;
                         }
@@ -92,6 +98,11 @@ public class TowerController : MonoBehaviour
                     }
                 }
             }
+
+            if (tTile == null)
+            {
+                transform.position = new Vector3(mousePos.x, mousePos.y + TileYOffset, transform.position.z);
+            }
         }
     }
 
@@ -99,9 +110,12 @@ public class TowerController : MonoBehaviour
     {
         if (!placed)
         {
-
             if (!followMouse)
             {
+                // Disable all other tower colliders
+                tmc.StartPlacingTower();
+                EnableCollider();
+
                 // Let the user place the tower
                 PreTowerHUD.transform.parent.gameObject.SetActive(false);
                 PostTowerHUD.transform.parent.gameObject.SetActive(false);
@@ -128,6 +142,7 @@ public class TowerController : MonoBehaviour
             }
             else
             {
+                tmc.DonePlacingTower();
                 placing = false;
                 followMouse = false;
 
@@ -137,9 +152,11 @@ public class TowerController : MonoBehaviour
                     rend.color = Color.white;
                 }
 
-                if (canPlace)
+                if (canPlace && (tTile != null))
                 {
                     placed = true;
+                    tTile.isOccupied = true;
+                    m_Audio.PlayOneShot(PlacementSFX);
                     gc.SpendCurrency(PlaceCost);
                     tmc.TowerPlaced(towerIndex);
                     Invoke("CheckAttack", GetAttackSpeed());
@@ -159,8 +176,9 @@ public class TowerController : MonoBehaviour
                 }
                 else
                 {
-                    m_Audio.PlayOneShot(MisPlaceSFX);
+                    tTile = null;
                     transform.position = origPos;
+                    m_Audio.PlayOneShot(MisPlaceSFX);
                 }
             }
         }
@@ -250,5 +268,15 @@ public class TowerController : MonoBehaviour
         PreTowerHUD.transform.parent.gameObject.SetActive(false);
         PostTowerHUD.transform.parent.gameObject.SetActive(false);
         PostTowerUpgradeHUD.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void DisableCollider()
+    {
+        collider.enabled = false;
+    }
+
+    public void EnableCollider()
+    {
+        collider.enabled = true;
     }
 }
