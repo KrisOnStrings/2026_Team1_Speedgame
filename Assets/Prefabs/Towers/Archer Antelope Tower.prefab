@@ -1215,7 +1215,12 @@ MonoBehaviour:
   MisPlaceSFX: {fileID: 8300000, guid: dc5bbb9e52949c5498f3f8ca9d54f1ad, type: 3}
   WhooshSFX: {fileID: 8300000, guid: f5dd3eb3f2e18d54995806808aad4a39, type: 3}
   PlacementSFX: {fileID: 8300000, guid: b2f846601042a8e4fb343206b175bb43, type: 3}
+  UpgradeVFX: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
   TowerBase: {fileID: 8994732193946176814}
+  CharacterTrans: {fileID: 934297787608417724}
+  TowerProjectile: {fileID: 0}
+  IdleSprite: {fileID: -3284726963119025321, guid: 6f1c507957bc20144b27e693d0a1fac2, type: 3}
+  AttackSprite: {fileID: 5369345849083570886, guid: 6f1c507957bc20144b27e693d0a1fac2, type: 3}
   PlaceCost: 5
   UpgradeCost: 5
   Range: 4

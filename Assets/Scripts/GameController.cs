@@ -102,12 +102,18 @@ public class GameController : MonoBehaviour
             vines.StartVines(mapGen.GetVines());
         }
 
-        Invoke("DelayDisableTitle", 2f);
+        Invoke("PrepareGame", 2f);
     }
 
-    private void DelayDisableTitle()
+    private void PrepareGame()
     {
         TitleObj.SetActive(false);
+
+        mapGen.Generate(Maps[mapIndex]);
+        mapGen.UpdatePathSprites();
+
+        towerMenu.gameObject.SetActive(true);
+        towerMenu.StartGame();
     }
 
     public virtual void ContinueButton()
@@ -220,14 +226,9 @@ public class GameController : MonoBehaviour
             startTime = Time.time;
             curDayCycle = 0.2f;
 
-            mapGen.Generate(Maps[mapIndex]);
-            mapGen.UpdatePathSprites();
-
             currency = StartingCurrency;
             waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints, Maps[mapIndex].MinibossWave, Maps[mapIndex].BossWave);
 
-            towerMenu.gameObject.SetActive(true);
-            towerMenu.StartGame();
 
             vines.StartVines(mapGen.GetVines());
         }

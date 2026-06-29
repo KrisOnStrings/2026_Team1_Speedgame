@@ -10,7 +10,12 @@ public class TowerController : MonoBehaviour
     public AudioClip MisPlaceSFX;
     public AudioClip WhooshSFX;
     public AudioClip PlacementSFX;
+    public GameObject UpgradeVFX;
     public Transform TowerBase;
+    public Transform CharacterTrans;
+    public GameObject TowerProjectile;
+    public Sprite IdleSprite;
+    public Sprite AttackSprite;
 
     public int PlaceCost;
     public int UpgradeCost;
@@ -34,6 +39,7 @@ public class TowerController : MonoBehaviour
     private bool canPlace;
     private float zDistance;
     private Vector3 origPos;
+    private float origCharacterXScale;
     private int level;
     Collider2D collider;
     private TileController tTile;
@@ -49,9 +55,11 @@ public class TowerController : MonoBehaviour
         placing = false;
         PreTowerHUD.transform.parent.gameObject.SetActive(false);
         PostTowerHUD.transform.parent.gameObject.SetActive(false);
+        origCharacterXScale = CharacterTrans.localScale.x;
         placed = false;
         canPlace = false;
         zDistance = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
+        if (TowerProjectile != null) TowerProjectile.SetActive(true);
         tTile = null;
 
         collider = GetComponent<Collider2D>();
@@ -206,6 +214,7 @@ public class TowerController : MonoBehaviour
                 gc.SpendCurrency(UpgradeCost + (level - 1));
                 level++;
                 UpdateTowerStats();
+                Instantiate(UpgradeVFX, transform.position, Quaternion.identity);
             }
             else
             {
@@ -221,12 +230,35 @@ public class TowerController : MonoBehaviour
         if (attacker != null)
         {
             m_Audio.PlayOneShot(WhooshSFX);
-            GameObject projectile = Instantiate(ProjectilePrefab, transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(ProjectilePrefab, CharacterTrans.position, Quaternion.identity);
             projectile.GetComponent<ProjectileController>().Target = attacker;
             projectile.GetComponent<ProjectileController>().Damage = GetDamage();
+            CharacterTrans.GetComponent<SpriteRenderer>().sprite = AttackSprite;
+            Invoke("SetIdle", 0.5f);
+            if (TowerProjectile != null) TowerProjectile.SetActive(false);
+
+            // Switch Character direction to face the attacker
+            if (CharacterTrans.position.x >= attacker.transform.position.x)
+            {
+                Vector3 scale = CharacterTrans.localScale;
+                scale.x = origCharacterXScale;
+                CharacterTrans.localScale = scale;
+            }
+            else
+            {
+                Vector3 scale = CharacterTrans.localScale;
+                scale.x = -1 * origCharacterXScale;
+                CharacterTrans.localScale = scale;
+            }
         }
 
         Invoke("CheckAttack", GetAttackSpeed());
+    }
+
+    private void SetIdle()
+    {
+        CharacterTrans.GetComponent<SpriteRenderer>().sprite = IdleSprite;
+        if (TowerProjectile != null) TowerProjectile.SetActive(true);
     }
 
     public float GetRange()
