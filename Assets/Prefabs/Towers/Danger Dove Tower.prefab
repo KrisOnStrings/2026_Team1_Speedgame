@@ -385,6 +385,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 6081294290264407546}
   m_maskType: 0
+--- !u!1 &2887389325530499720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4463478437519754391}
+  m_Layer: 0
+  m_Name: TowerBase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4463478437519754391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887389325530499720}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4723227836050511955}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3363895841810979203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,6 +1253,7 @@ Transform:
   - {fileID: 3012268542661950843}
   - {fileID: 5818305456471812059}
   - {fileID: 4688869333865869771}
+  - {fileID: 4463478437519754391}
   - {fileID: 4243390443417644548}
   - {fileID: 3075995260459053213}
   m_Father: {fileID: 0}
@@ -1245,6 +1277,7 @@ MonoBehaviour:
   MisPlaceSFX: {fileID: 8300000, guid: dc5bbb9e52949c5498f3f8ca9d54f1ad, type: 3}
   WhooshSFX: {fileID: 8300000, guid: f5dd3eb3f2e18d54995806808aad4a39, type: 3}
   PlacementSFX: {fileID: 8300000, guid: b2f846601042a8e4fb343206b175bb43, type: 3}
+  TowerBase: {fileID: 4463478437519754391}
   PlaceCost: 3
   UpgradeCost: 3
   Range: 1.5

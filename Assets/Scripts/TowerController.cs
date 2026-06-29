@@ -10,6 +10,7 @@ public class TowerController : MonoBehaviour
     public AudioClip MisPlaceSFX;
     public AudioClip WhooshSFX;
     public AudioClip PlacementSFX;
+    public Transform TowerBase;
 
     public int PlaceCost;
     public int UpgradeCost;
@@ -61,6 +62,17 @@ public class TowerController : MonoBehaviour
     {
         if (followMouse)
         {
+            if (Input.GetMouseButtonDown(1))
+            {
+                followMouse = false;
+                placing = false;
+                tTile = null;
+                transform.position = origPos;
+                m_Audio.PlayOneShot(MisPlaceSFX);
+                tmc.DonePlacingTower();
+                return;
+            }
+
             Vector2 mousePos =
                 Camera.main.ScreenToWorldPoint(
                     Input.mousePosition);

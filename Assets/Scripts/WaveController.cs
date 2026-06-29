@@ -169,7 +169,7 @@ public class WaveController : MonoBehaviour
 
         foreach (AttackerController attacker in attackers)
         {
-            float distance = Vector3.Distance(tower.transform.position, attacker.transform.position);
+            float distance = Vector3.Distance(tower.TowerBase.position, attacker.transform.position);
 
             if (distance > tower.GetRange())
                 continue;
