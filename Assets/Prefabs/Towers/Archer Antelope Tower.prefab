@@ -1167,7 +1167,7 @@ GameObject:
   - component: {fileID: 6837309813067153011}
   - component: {fileID: 2268119316575584954}
   - component: {fileID: -4560610299540553951}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Archer Antelope Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}

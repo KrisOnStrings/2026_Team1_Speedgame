@@ -1446,7 +1446,7 @@ GameObject:
   - component: {fileID: 2268119316575584954}
   - component: {fileID: -1458260026838736395}
   - component: {fileID: 4872563634077889954}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ramrock Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}

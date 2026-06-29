@@ -62,6 +62,9 @@ public class TowerController : MonoBehaviour
     {
         if (followMouse)
         {
+            // Just make sure the collider is always on for towers being placed
+            collider.enabled = true;
+
             if (Input.GetMouseButtonDown(1))
             {
                 followMouse = false;
@@ -70,17 +73,17 @@ public class TowerController : MonoBehaviour
                 transform.position = origPos;
                 m_Audio.PlayOneShot(MisPlaceSFX);
                 tmc.DonePlacingTower();
+                SpriteRenderer[] rends = GetComponentsInChildren<SpriteRenderer>();
+                foreach (SpriteRenderer rend in rends)
+                {
+                    rend.color = Color.white;
+                }
                 return;
             }
 
-            Vector2 mousePos =
-                Camera.main.ScreenToWorldPoint(
-                    Input.mousePosition);
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            RaycastHit2D hit =
-                Physics2D.Raycast(
-                    mousePos,
-                    Vector2.zero);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 20f, ~(1 << 6));
 
             if (hit.collider != null)
             {
@@ -89,7 +92,7 @@ public class TowerController : MonoBehaviour
                 if (tile != null)
                 {
                     canPlace = true;
-                    transform.position = tile.transform.position + new Vector3(0, TileYOffset);
+                    transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y + TileYOffset, transform.position.z);
                     SpriteRenderer[] rends = GetComponentsInChildren<SpriteRenderer>();
 
                     if (!tile.isOccupied && tile.isPlaceable)
