@@ -202,6 +202,7 @@ public class TowerController : MonoBehaviour
             // Upgrade the tower
             if (gc.GetCurrency() >= (UpgradeCost + (level - 1)))
             {
+                m_Audio.PlayOneShot(PlacementSFX);
                 gc.SpendCurrency(UpgradeCost + (level - 1));
                 level++;
                 UpdateTowerStats();
@@ -263,7 +264,6 @@ public class TowerController : MonoBehaviour
         }
         else
         {
-            PostTowerHUD.transform.parent.gameObject.SetActive(true);
             PostTowerHUD.transform.parent.gameObject.SetActive(true);
             PostTowerHUD.text = gameObject.name + " : " + level + "\n";
             PostTowerHUD.text += $"Range: {Range + ((level - 1) * UpgradeRange)}" + "\n";

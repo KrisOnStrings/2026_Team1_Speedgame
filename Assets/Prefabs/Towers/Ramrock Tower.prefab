@@ -121,7 +121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3760766880669959732
 Transform:
   m_ObjectHideFlags: 0
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 3.2168736, y: 0, z: -1.1616516, w: -6.344393}
+  m_margin: {x: 3.2168736, y: 0, z: -7.5467873, w: -6.344393}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -352,8 +352,8 @@ Transform:
   m_GameObject: {fileID: 2712568849664837935}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6655, y: 0.19999999, z: 0}
-  m_LocalScale: {x: 1.321075, y: 1.2499688, z: 1}
+  m_LocalPosition: {x: 0.8094, y: 0.19999999, z: 0}
+  m_LocalScale: {x: 1.6088051, y: 1.2499688, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1890858741729105521}
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 3.2168736, y: 0, z: -1.5190792, w: -6.5231056}
+  m_margin: {x: 3.2168736, y: 0, z: -13.343401, w: -6.5231056}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -849,7 +849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1890858741729105521
 Transform:
   m_ObjectHideFlags: 0
