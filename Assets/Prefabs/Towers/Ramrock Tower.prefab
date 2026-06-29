@@ -1498,7 +1498,7 @@ MonoBehaviour:
   TowerBase: {fileID: 1456106724034794908}
   PlaceCost: 4
   UpgradeCost: 4
-  Range: 1
+  Range: 1.5
   Damage: 2
   AttackSpeed: 0.75
   UpgradeRange: 0
