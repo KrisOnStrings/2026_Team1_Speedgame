@@ -19,12 +19,13 @@ public class GameController : MonoBehaviour
     public int StartingCurrency;
     public GameObject VictoryObj;
     public AudioClip VictorySFX;
-    public GameObject GameOverObj;
     public GameObject DefeatObj;
     public AudioClip DefeatSFX;
     public AudioClip MenuClickSFX;
     public GameObject FireworkPrefab;
     public Transform FireworksLoc;
+    public StoryController IntroStory;
+    public StoryController EndingStory;
 
     [SerializeField] protected int mapIndex;
     [SerializeField] protected int currency;
@@ -76,31 +77,43 @@ public class GameController : MonoBehaviour
 
     public void StartButton()
     {
-        music.SetMusic(MusicController.MusicType.Day);
         m_Audio.PlayOneShot(MenuClickSFX);
+
+        if (mapIndex == 0)
+        {
+            IntroStory.StartStory();
+        }
+        else
+        {
+            music.SetMusic(MusicController.MusicType.Day);
+
+            startTime = Time.time;
+            curDayCycle = 0.2f;
+
+            mapGen.Generate(Maps[mapIndex]);
+            mapGen.UpdatePathSprites();
+
+            currency = StartingCurrency;
+            waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints, Maps[mapIndex].MinibossWave, Maps[mapIndex].BossWave);
+
+            towerMenu.gameObject.SetActive(true);
+            towerMenu.StartGame();
+
+            vines.StartVines(mapGen.GetVines());
+        }
+
+        Invoke("DelayDisableTitle", 2f);
+    }
+
+    private void DelayDisableTitle()
+    {
         TitleObj.SetActive(false);
-
-        startTime = Time.time;
-        curDayCycle = 0.2f;
-
-        mapGen.Generate(Maps[mapIndex]);
-        mapGen.UpdatePathSprites();
-
-        currency = StartingCurrency;
-        waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints, Maps[mapIndex].MinibossWave, Maps[mapIndex].BossWave);
-
-        towerMenu.gameObject.SetActive(true);
-        towerMenu.StartGame();
-
-        vines.StartVines(mapGen.GetVines());
     }
 
     public virtual void ContinueButton()
     {
-        mapIndex++;
-
         CancelInvoke("PlayFireworks");
-        foreach(GameObject firework in fireworks)
+        foreach (GameObject firework in fireworks)
         {
             Destroy(firework);
         }
@@ -111,7 +124,24 @@ public class GameController : MonoBehaviour
 
         VictoryObj.SetActive(false);
 
-        StartButton();
+        mapIndex++;
+
+        if (mapIndex < Maps.Length)
+        {
+
+            StartButton();
+        }
+        else
+        {
+            Invoke("DelayTitleEnable", 2f);
+            EndingStory.StartStory();
+        }
+    }
+
+    private void DelayTitleEnable()
+    {
+        TitleObj.SetActive(true);
+        music.SetMusic(MusicController.MusicType.Day);
     }
 
     public void RetryButton()
@@ -159,14 +189,7 @@ public class GameController : MonoBehaviour
         vines.StopGrowing();
         m_Audio.PlayOneShot(VictorySFX);
 
-        if (mapIndex < (Maps.Length - 1))
-        {
-            VictoryObj.SetActive(true);
-        }
-        else
-        {
-            GameOverObj.SetActive(true);
-        }
+        VictoryObj.SetActive(true);
         startTime = -1;
 
         fireworks = new List<GameObject>();
@@ -186,5 +209,31 @@ public class GameController : MonoBehaviour
         DefeatObj.SetActive(true);
         vines.StopGrowing();
         startTime = -1;
+    }
+
+    public void StoryDone()
+    {
+        if (mapIndex < Maps.Length)
+        {
+            music.SetMusic(MusicController.MusicType.Day);
+
+            startTime = Time.time;
+            curDayCycle = 0.2f;
+
+            mapGen.Generate(Maps[mapIndex]);
+            mapGen.UpdatePathSprites();
+
+            currency = StartingCurrency;
+            waves.StartWaves(mapGen.GetPath(), Maps[mapIndex].WavePoints, Maps[mapIndex].MinibossWave, Maps[mapIndex].BossWave);
+
+            towerMenu.gameObject.SetActive(true);
+            towerMenu.StartGame();
+
+            vines.StartVines(mapGen.GetVines());
+        }
+        else
+        {
+            mapIndex = 0;
+        }
     }
 }

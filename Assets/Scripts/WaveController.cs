@@ -52,7 +52,7 @@ public class WaveController : MonoBehaviour
         {
             waveWait = false;
             waveIndex++;
-            WaveSplash.Show(GetWaveStatus());
+            if (waveIndex < wavePoints.Length) WaveSplash.Show(GetWaveStatus());
             Invoke("HandleWave", TimeBetweenWaves);
         }
     }
